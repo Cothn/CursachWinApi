@@ -1,36 +1,39 @@
 #include <windows.h>
 #include <wingdi.h>
 
-typedef struct ControlObject
+typedef struct GameObject
 {
 	int delta_x;
 	int delta_y;
 	int x;
 	int y;
 
-} ControlObject;
+} GameObject;
 
 
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 void MyRedrawWindow(HWND hWnd);
-void InitializeGame(ControlObject* object, int x, int y, int edge);
+void InitializeGame(GameObject* player, GameObject* enemys, int x, int y, int edge);
+void InitializeEnemy(GameObject* objects, int edge);
 //void SetPlayerSpeed(ControlObject* object, int speed_x, int speed_y);
-void MovePlayer(ControlObject* object, int width, int height);
-void MoveEnemy(ControlObject* object, RECT gameWindow);
-void DrawGameField(ControlObject* object, HDC hdc, HDC hdcMemSurface);
+void MovePlayer(GameObject* object, int width, int height);
+void MoveEnemy(GameObject** objects);
+void DrawGameField(GameObject* object, HDC hdc, HDC hdcMemSurface);
 
-
+static LPSTR OverMessage = (LPSTR)"Game Over!";
 static int CELL_SIZE = 15;
-static ControlObject player;
+static int ENEMY_MAX_SPEED = 12;
+static GameObject player;
+
 static HDC hdcMemSurface;
 static bool GameEnd = false;
 const int M = 35;
-const int N = 35;
+const int N = 40;
+int CountEnemy =20;
 
 int gameField[M][N];
-
-
+GameObject* enemys;
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
 {
@@ -57,7 +60,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdL
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
-	InitializeGame(&player, 0, 0, 1);
+	 enemys = new GameObject[N/2];
+	InitializeGame(&player, enemys, 0, 0, 1);
 
 
 	while (GetMessage(&msg, NULL, 0, 0))
@@ -87,15 +91,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message,
 	{
 
 	case WM_TIMER:
-		MovePlayer(&player, N, M);
+		if (!GameEnd) {
+			MovePlayer(&player, N, M);
+		}
+		else
+		{
+			GameEnd = false;
+			InitializeGame(&player, enemys, 0, 0, 1);
+			MessageBox(hWnd, OverMessage, OverMessage, MB_OK | MB_APPLMODAL);
+		}
 		MyRedrawWindow(hWnd);
 		break;
-	
-	//case WM_SIZE:
-	//	OnWindowResize(&player, rect);
-	//	MyRedrawWindow(hWnd);
-	//	break;
-	
+
 	case WM_CREATE:
 	{
 		const HINSTANCE hInstance = (HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE);
@@ -105,28 +112,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message,
 		SetTimer(hWnd, 1, 1000/20, NULL);
 		return 0;
 	}
-
-	//case WM_KEYUP:
-	//{
-	//	switch (wParam)
-	//	{
-	//	case VK_LEFT:
-	//		is_left = false;
-	//		break;
-	//	case VK_UP:
-	//		is_up = false;
-	//		break;
-	//	case VK_RIGHT:
-	//		is_right = false;
-	//		break;
-	//	case VK_DOWN:
-	//		is_down = false;
-	//		break;
-	//	default:
-	//		break;
-	//	}
-	//	break;
-	//}
 
 	case WM_KEYDOWN:
 	{
@@ -152,34 +137,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message,
 			break;
 		}
 
-		//switch (wParam)
-		//{
-		//case VK_LEFT:
-		//	is_left = true;
-		//	break;
-		//case VK_UP:
-		//	is_up = true;
-		//	break;
-		//case VK_RIGHT:
-		//	is_right = true;
-		//	break;
-		//case VK_DOWN:
-		//	is_down = true;
-		//	break;
-		//default:
-		//	break;
-		//}
 
-		//if (is_left)
-		//	x += -delta;
-		//if (is_right)
-		//	x += delta;
-		//if (is_up)
-		//	y += -delta;
-		//if (is_down)
-		//	y += delta;
-
-		//SetPlayerSpeed(&player, x, y);
 		MyRedrawWindow(hWnd);
 		break;
 	}
@@ -189,7 +147,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message,
 		hdc = BeginPaint(hWnd, &ps);
 
 		DrawGameField(&player, hdc, hdcMemSurface);
-
 		EndPaint(hWnd, &ps);
 		break;
 	}
@@ -212,40 +169,39 @@ void MyRedrawWindow(HWND hWnd)
 }
 
 
-void SetPlayerCoordinates(ControlObject* object, int x,int y)
-{
-	object->x = x;
-	object->y = y;
-	object->delta_x = 0;
-	object->delta_y = 0;
-}
-
-void InitializeGame(ControlObject* object,int x, int y, int edge)
+void InitializeGame(GameObject* player, GameObject* enemys, int x, int y, int edge)
 {
 
 	//инициализаци€ кра€
 	for (int i = 0; i < M; i++)
 		for (int j = 0; j < N; j++)
 			if (i < edge || j < edge || i >= M - edge || j >= N - edge)  gameField[i][j] = 1;
+			else gameField[i][j] = 0;
+			
 
 	//»нициализаци€ игрока
-	object->x = x;
-	object->y = y;
-	object->delta_x = 0;
-	object->delta_y = 0;
+	player->x = x;
+	player->y = y;
+	player->delta_x = 0;
+	player->delta_y = 0;
+
+	InitializeEnemy(enemys, edge);
 }
 
-//void SetPlayerSpeed(ControlObject* object, int speed_x, int speed_y)
-//{
-//	if(speed_x != 0)
-//		object->speed_x = speed_x;
-//	if (speed_y != 0)
-//		object->speed_y = speed_y;
-//}
-
-void MovePlayer(ControlObject* object, int width, int height)
+void InitializeEnemy(GameObject* objects, int edge)
 {
-	static int counter = 0;
+	//»нициализаци€ противников
+	for (int i = 0; i < CountEnemy; i++)
+	{
+		objects[i].x = edge + rand() % (N - edge * 2);
+		objects[i].y = edge + rand() % (M - edge * 2);
+		objects[i].delta_x = ENEMY_MAX_SPEED / 2 - rand() % ENEMY_MAX_SPEED;
+		objects[i].delta_y = ENEMY_MAX_SPEED / 2 - rand() % ENEMY_MAX_SPEED;
+	}
+}
+
+void MovePlayer(GameObject* object, int width, int height)
+{
 
 	object->x += object->delta_x;
 	if ((object->x ) <= 0)
@@ -255,10 +211,9 @@ void MovePlayer(ControlObject* object, int width, int height)
 	}
 	else if ((object->x) >= width)
 	{
-		object->x = width;
+		object->x = width-1;
 		object->delta_x = 0;
 	}
-
 
 	object->y += object->delta_y;
 	if ((object->y ) <= 0)
@@ -268,7 +223,7 @@ void MovePlayer(ControlObject* object, int width, int height)
 	}
 	else if ((object->y ) >= height)
 	{
-		object->y = height ;
+		object->y = height-1 ;
 		object->delta_y = 0;
 	}
 	
@@ -278,64 +233,36 @@ void MovePlayer(ControlObject* object, int width, int height)
 
 }
 
-void MoveEnemy(ControlObject* object, RECT gameField)
+void MoveEnemy(GameObject** objects)
 {
-	static int counter = 0;
+	for (int i = 0; i < CountEnemy; i++)
+	{
+		objects[i]->x += objects[i]->delta_x;
+		if (gameField[objects[i]->y][objects[i]->x] == 1)
+		{
+			objects[i]->delta_x *= -1;
+			objects[i]->x += objects[i]->delta_x;
+		}
 
-	LONG width = gameField.right - gameField.left;
-	LONG height = gameField.bottom - gameField.top;
+		objects[i]->y += objects[i]->delta_y;
+		if (gameField[objects[i]->y][objects[i]->x] == 1)
+		{
+			objects[i]->delta_y *= -1;
+			objects[i]->y += objects[i]->delta_y;
+		}
 
-	if ((object->x + object->delta_x) <= 0)
-	{
-		object->x = 0;
-		object->delta_x = -object->delta_x;
-	}
-	else if ((object->x + CELL_SIZE + object->delta_x) >= width)
-	{
-		object->x = width - CELL_SIZE;
-		object->delta_x = -object->delta_x;
-	}
-	else
-	{
-		object->x += object->delta_x;
-	}
-
-
-	if ((object->y + object->delta_y) <= 0)
-	{
-		object->y = 0;
-		object->delta_y = -object->delta_y;
-	}
-	else if ((object->y + CELL_SIZE + object->delta_y) >= height)
-	{
-		object->y = height - CELL_SIZE;
-		object->delta_y = -object->delta_y;
-	}
-	else
-	{
-		object->y += object->delta_y;
+		//проверка конечной точки
+		if (gameField[objects[i]->y][objects[i]->x] == 2) {
+			GameEnd = true;
+		}
 	}
 
-	--counter;
-
-	if ((object->delta_x > 0) && (counter < 0))
-		object->delta_x--;
-	else if ((object->delta_x < 0) && (counter < 0))
-		object->delta_x++;
-
-	if ((object->delta_y > 0) && (counter < 0))
-		object->delta_y--;
-	else if ((object->delta_y < 0) && (counter < 0))
-		object->delta_y++;
-
-	if (counter < 0)
-		counter = 8;
 
 }
 
 
 
-void DrawGameField(ControlObject* object, HDC hdc,  HDC hdcMemSurface)
+void DrawGameField(GameObject* object, HDC hdc,  HDC hdcMemSurface)
 {
 	//SelectObject(hdcMemSurface, object->image.hBitmap);
 	//TransparentBlt(
@@ -373,6 +300,5 @@ void DrawGameField(ControlObject* object, HDC hdc,  HDC hdcMemSurface)
 	Rectangle(hdc, object->x * CELL_SIZE+5, object->y * CELL_SIZE + 5, object->x * CELL_SIZE + CELL_SIZE - 5, object->y * CELL_SIZE + CELL_SIZE - 5);
 
 }
-
 
 

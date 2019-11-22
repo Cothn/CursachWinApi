@@ -1,4 +1,4 @@
 ﻿  Source.cpp
-D:\RepositHub\CursachWinApi\Xonix\WinApiLab1\Source.cpp(76): warning C4101: 'hBrush': unreferenced local variable
-D:\RepositHub\CursachWinApi\Xonix\WinApiLab1\Source.cpp(75): warning C4101: 'hmdc': unreferenced local variable
+D:\RepositHub\CursachWinApi\Xonix\WinApiLab1\Source.cpp(80): warning C4101: 'hBrush': unreferenced local variable
+D:\RepositHub\CursachWinApi\Xonix\WinApiLab1\Source.cpp(79): warning C4101: 'hmdc': unreferenced local variable
   WinApiLab1.vcxproj -> D:\RepositHub\CursachWinApi\Xonix\Debug\WinApiLab1.exe

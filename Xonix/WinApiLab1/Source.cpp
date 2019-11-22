@@ -25,8 +25,8 @@ static int CELL_SIZE = 15;
 static ControlObject player;
 static HDC hdcMemSurface;
 static bool GameEnd = false;
-const int M = 40;
-const int N = 40;
+const int M = 35;
+const int N = 35;
 
 int gameField[M][N];
 
@@ -51,8 +51,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdL
 	RegisterClassEx(&wcex);
 
 	hWnd = CreateWindow("HelloKsisClass", "Hello, Xonix!",
-		WS_OVERLAPPEDWINDOW, CELL_SIZE*5, CELL_SIZE * 5,
-		(M+1)*CELL_SIZE, (N+1)*CELL_SIZE, NULL, NULL, hInstance, NULL);
+		WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
+		1+(N+1)*CELL_SIZE, 24+(M+1)*CELL_SIZE, NULL, NULL, hInstance, NULL);
 
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);

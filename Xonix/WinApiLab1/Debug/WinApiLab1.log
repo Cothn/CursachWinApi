@@ -1,6 +1,4 @@
 ﻿  Source.cpp
-D:\RepositHub\CursachWinApi\Xonix\WinApiLab1\Source.cpp(117): warning C4101: 'hBrush': unreferenced local variable
-D:\RepositHub\CursachWinApi\Xonix\WinApiLab1\Source.cpp(116): warning C4101: 'hmdc': unreferenced local variable
   WinApiLab1.vcxproj -> D:\RepositHub\CursachWinApi\Xonix\Debug\WinApiLab1.exe
 d:\reposithub\cursachwinapi\xonix\winapilab1\source.cpp(58): warning C26495: Variable 'stack::obj' is uninitialized. Always initialize a member variable (type.6).
-d:\reposithub\cursachwinapi\xonix\winapilab1\source.cpp(78): warning C28251: Inconsistent annotation for 'WinMain': this instance has no annotations. See c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\winbase.h(933). 
+d:\reposithub\cursachwinapi\xonix\winapilab1\source.cpp(73): warning C28251: Inconsistent annotation for 'WinMain': this instance has no annotations. See c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\winbase.h(933). 

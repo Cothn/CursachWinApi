@@ -15,13 +15,13 @@
     <SFA>
       <FILEPATH>d:\reposithub\cursachwinapi\xonix\winapilab1</FILEPATH>
       <FILENAME>source.cpp</FILENAME>
-      <LINE>78</LINE>
+      <LINE>73</LINE>
       <COLUMN>13</COLUMN>
     </SFA>
     <DEFECTCODE>28251</DEFECTCODE>
     <DESCRIPTION>Inconsistent annotation for 'WinMain': this instance has no annotations. See c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\winbase.h(933). </DESCRIPTION>
     <FUNCTION>WinMain</FUNCTION>
     <DECORATED>WinMain@16</DECORATED>
-    <FUNCLINE>78</FUNCLINE>
+    <FUNCLINE>73</FUNCLINE>
     <PATH></PATH>
   </DEFECT></DEFECTS>

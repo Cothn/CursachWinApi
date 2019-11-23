@@ -36,6 +36,34 @@ int CountEnemy =1;
 
 int gameField[M][N];
 GameObject* Enemys;
+class stack
+{
+	int a[N * M * 2+1];
+	public:
+		int top;
+		stack()
+		{
+			top = 0;
+		}
+		void push(int i)
+		{
+			a[top] = i;
+			top++;
+		}
+		int pop() 
+		{
+			return(a[--top]);
+		}
+};
+
+stack s;
+
+//stack::stack()
+//{
+//	top = 0;
+//}
+
+
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
 {
@@ -261,31 +289,61 @@ void MovePlayer(GameObject* object, GameObject* enemy, int width, int height)
 
 void drop(int x, int y)
 {
-	//помечаем облась как занятую противником
-	//int byfY = y;
-	//int byfX = x;
-	//int byfY2 = y;
 
-	while( gameField[y][x] != 1 && gameField[y][x] != 2)
-	{
-		while (gameField[y][x] != 1 && gameField[y][x] != 2)
+	s.push(x);
+	s.push(y);
+	while (s.top != 0) {
+		if (gameField[y][x] == 0) gameField[y][x] = -1;
+		if (gameField[y - 1][x] == 0)
 		{
-			while (gameField[y][x] == 0)
-			{
-				while (gameField[y][x] == 0)
-				{
-					gameField[y][x] = -1;
-					y--;
-				}
-				y++;
-				x--;
-			}
-			x++;
+			s.push(x);
+			s.push(y);
+			y--;
+		}
+		else if (gameField[y + 1][x] == 0)
+		{
+			s.push(x);
+			s.push(y);
 			y++;
 		}
-		y--;
-		x++;
+		else if (gameField[y][x - 1] == 0)
+		{
+			s.push(x);
+			s.push(y);
+			x--;
+		}
+		else if (gameField[y][x + 1] == 0)
+		{
+			s.push(x);
+			s.push(y);
+			x++;
+		}
+		else
+		{
+			y = s.pop();
+			x = s.pop();
+		}
 	}
+	//while( gameField[y][x] != 1 && gameField[y][x] != 2)
+	//{
+	//	while (gameField[y][x] != 1 && gameField[y][x] != 2)
+	//	{
+	//		while (gameField[y][x] == 0)
+	//		{
+	//			while (gameField[y][x] == 0)
+	//			{
+	//				gameField[y][x] = -1;
+	//				y--;
+	//			}
+	//			y++;
+	//			x--;
+	//		}
+	//		x++;
+	//		y++;
+	//	}
+	//	y--;
+	//	x++;
+	//}
 
 	//while ((gameField[y][x] == 0)) {
 	//	byfY2 = y;

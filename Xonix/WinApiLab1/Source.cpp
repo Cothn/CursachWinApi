@@ -409,29 +409,15 @@ void MoveEnemy(GameObject* objects)
 			|| (gameField[objects[i].y / CELL_SIZE][objects[i].x / CELL_SIZE+1] == 1))
 		{
 			objects[i].delta_x = -objects[i].delta_x;
-
-			if (objects[i].delta_x > 0) {
-				objects[i].x += (CELL_SIZE - objects[i].x % CELL_SIZE) * 2; //отскок вправо
-			}
-			else
-			{
-
-				objects[i].x += (objects[i].x % CELL_SIZE) * -2; //отскок влево
-			}
+			objects[i].x += objects[i].delta_x;
 		}
 
 		objects[i].y += objects[i].delta_y;
 		if ((gameField[objects[i].y / CELL_SIZE][objects[i].x / CELL_SIZE] == 1)
 			|| (gameField[objects[i].y / CELL_SIZE + 1][objects[i].x / CELL_SIZE ] == 1))
 		{
-			objects[i].delta_y = -objects[i].delta_y;
-			if (objects[i].delta_y > 0) {
-				objects[i].y += (CELL_SIZE - objects[i].y % CELL_SIZE) * 2; //отскок вниз
-			}
-			else
-			{
-				objects[i].y += (objects[i].y % CELL_SIZE) * -2; //отскок вверх
-			}
+			objects[i].delta_y = -objects[i].delta_y;		
+			objects[i].y += objects[i].delta_y;
 		}
 
 		//проверка конечной точки

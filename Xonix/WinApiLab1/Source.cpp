@@ -70,11 +70,6 @@ public:
 	}
 };
 
-
-static HDC hdcMemSurface;
-
-
-
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
 {
 	WNDCLASSEX wcex; HWND hWnd; MSG msg;
@@ -87,7 +82,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdL
 	wcex.hInstance = hInstance;
 	wcex.hIcon = NULL;
 	wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wcex.hbrBackground = (HBRUSH)(COLOR_SCROLLBAR + 1);
+	wcex.hbrBackground = NULL;
 	wcex.lpszMenuName = NULL;
 	wcex.lpszClassName = "XonixClass";
 	wcex.hIconSm = wcex.hIcon;
@@ -96,6 +91,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdL
 	hWnd = CreateWindow("XonixClass", "Hello, Xonix!",
 		WS_OVERLAPPED | WS_SYSMENU, CW_USEDEFAULT, CW_USEDEFAULT,
 		pixelWidth, pixelHeight, NULL, NULL, hInstance, NULL);
+
+	if (!hWnd)
+	{
+		return FALSE;
+	}
 
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
@@ -113,13 +113,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message,
 	WPARAM wParam, LPARAM lParam)
 {
 
-	HDC hmdc;
-	HBRUSH hBrush; //создаём объект-кисть
 	PAINTSTRUCT ps;
 	HDC hdc; //создаём контекст устройства
 
-	RECT rect;
-	GetClientRect(hWnd, &rect);
 	switch (message)
 	{
 
@@ -127,11 +123,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message,
 		{
 			// инициализация игры
 			InitializeGame(&player, Enemys, 0, 0, 1);
-
-			const HINSTANCE hInstance = (HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE);
-			const HDC hdcWin = GetDC(hWnd);
-			hdcMemSurface = CreateCompatibleDC(hdcWin);
-			ReleaseDC(hWnd, hdcWin);
 			SetTimer(hWnd, 1, 1000/15, NULL);
 			return 0;
 		}
@@ -235,6 +226,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message,
 		case WM_PAINT:
 		{
 			hdc = BeginPaint(hWnd, &ps);
+			ps.fErase = false;
 			DrawGameField(&player, Enemys, hdc);
 			EndPaint(hWnd, &ps);
 			break;
@@ -469,24 +461,24 @@ void DrawGameField(GameObject* object, GameObject* enemy, HDC hdc)
 			if (gameField[i][j] == 2)
 			{
 				Rectangle(BuffHdc, j * CELL_SIZE, i * CELL_SIZE, j * CELL_SIZE + CELL_SIZE, i * CELL_SIZE + CELL_SIZE);
-				Rectangle(BuffHdc, j * CELL_SIZE + 1, i * CELL_SIZE + 1, j * CELL_SIZE + CELL_SIZE - 1, i * CELL_SIZE + CELL_SIZE - 1);
+				Rectangle(BuffHdc, j * CELL_SIZE + CELL_SIZE/10, i * CELL_SIZE + CELL_SIZE / 10, j * CELL_SIZE + CELL_SIZE - CELL_SIZE / 10, i * CELL_SIZE + CELL_SIZE - CELL_SIZE / 10);
 			}
 		}
 	}
 
 	//Draw Player
 	Rectangle(BuffHdc, object->x * CELL_SIZE, object->y * CELL_SIZE, object->x * CELL_SIZE + CELL_SIZE, object->y * CELL_SIZE + CELL_SIZE);
-	Rectangle(BuffHdc, object->x * CELL_SIZE+5, object->y * CELL_SIZE + 5, object->x * CELL_SIZE + CELL_SIZE - 5, object->y * CELL_SIZE + CELL_SIZE - 5);
+	Ellipse(BuffHdc, object->x * CELL_SIZE+ CELL_SIZE / 3, object->y * CELL_SIZE + CELL_SIZE / 3, object->x * CELL_SIZE + CELL_SIZE - CELL_SIZE / 3, object->y * CELL_SIZE + CELL_SIZE - CELL_SIZE / 3);
 
 	//Перерисовка врагов
 	for (int i = 0; i < CountEnemy; i++)
 	{
 		Ellipse(BuffHdc, enemy[i].x , enemy[i].y , enemy[i].x  + CELL_SIZE, enemy[i].y  + CELL_SIZE);
-		Rectangle(BuffHdc, enemy[i].x + 5, enemy[i].y  + 5, enemy[i].x + CELL_SIZE - 5, enemy[i].y + CELL_SIZE - 5);
+		Rectangle(BuffHdc, enemy[i].x + CELL_SIZE / 3, enemy[i].y  + CELL_SIZE / 3, enemy[i].x + CELL_SIZE - CELL_SIZE / 3, enemy[i].y + CELL_SIZE - CELL_SIZE / 3);
 
 	}
 
-	BitBlt(hdc, 0, 0, 1 + (Width + 1) * CELL_SIZE, 24 + (Height + 1) * CELL_SIZE, BuffHdc, 0, 0, SRCCOPY);
+	BitBlt(hdc, 0, 0, pixelWidth, pixelHeight, BuffHdc, 0, 0, SRCCOPY);
 
 	//освобождаем память
 	SelectObject(BuffHdc, BuffHan);

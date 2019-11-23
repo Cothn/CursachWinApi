@@ -24,15 +24,18 @@ void UpdateField();
 void drop(int y, int x);
 
 static LPSTR OverMessage = (LPSTR)"Game Over!";
+static LPSTR WinMessage = (LPSTR)"Player Win!";
 static int CELL_SIZE = 15;
-static int ENEMY_MAX_SPEED = 1 % (CELL_SIZE+1) * 2;
+static int ENEMY_MAX_SPEED = (12 % (CELL_SIZE)) * 2;
 static GameObject player;
 
 static HDC hdcMemSurface;
 static bool GameEnd = false;
+static bool PlayerWin = false;
 const int M = 35;
 const int N = 40;
-int CountEnemy =1;
+const int WIN_PERCENT = 70;
+int CountEnemy =5;
 
 int gameField[M][N];
 GameObject* Enemys;
@@ -123,8 +126,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message,
 		else
 		{
 			GameEnd = false;
-			InitializeGame(&player, Enemys, 0, 0, 1);
-			MessageBox(hWnd, OverMessage, OverMessage, MB_OK | MB_APPLMODAL);
+
+			if(PlayerWin)
+			{
+				PlayerWin = false;
+				MessageBox(hWnd, WinMessage, WinMessage, MB_OK | MB_APPLMODAL);
+				InitializeGame(&player, Enemys, 0, 0, 1);
+			}
+			else {
+				InitializeGame(&player, Enemys, 0, 0, 1);
+				MessageBox(hWnd, OverMessage, OverMessage, MB_OK | MB_APPLMODAL);
+			}
+
 		}
 		MyRedrawWindow(hWnd);
 		break;
@@ -139,6 +152,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message,
 		return 0;
 	}
 
+	case WM_ERASEBKGND:
+		return 1;
 	case WM_KEYDOWN:
 	{
 		switch (wParam)
@@ -324,108 +339,6 @@ void drop(int x, int y)
 			x = s.pop();
 		}
 	}
-	//while( gameField[y][x] != 1 && gameField[y][x] != 2)
-	//{
-	//	while (gameField[y][x] != 1 && gameField[y][x] != 2)
-	//	{
-	//		while (gameField[y][x] == 0)
-	//		{
-	//			while (gameField[y][x] == 0)
-	//			{
-	//				gameField[y][x] = -1;
-	//				y--;
-	//			}
-	//			y++;
-	//			x--;
-	//		}
-	//		x++;
-	//		y++;
-	//	}
-	//	y--;
-	//	x++;
-	//}
-
-	//while ((gameField[y][x] == 0)) {
-	//	byfY2 = y;
-	//	while ((gameField[y][x] == 0))
-	//	{
-	//		gameField[y][x] = -1;
-	//		y++;
-	//	}
-	//	y = byfY2 - 1;
-	//	while (gameField[y][x] == 0)
-	//	{
-	//		gameField[y][x] = -1;
-	//		y--;
-	//	}
-	//	y++;
-	//	while ((gameField[y][x] == -1) && (gameField[y][x - 1] != 0))
-	//	{
-	//		y++;
-	//	}
-	//	if (gameField[y][x - 1] == 0)
-	//	{
-	//		x--;
-	//	}
-	//	else
-	//	{
-	//		while ((gameField[y][x] == 2) || ((gameField[y][x] == 1) && (gameField[y-1][x] != 1
-	//		{
-	//			x++;
-	//		}
-	//		while ((gameField[y][x] == -1) && (gameField[y][x - 1] != 0))
-	//		{
-	//			y++;
-	//		}
-	//		if (gameField[y][x - 1] == 0)
-	//		{
-	//			x--;
-	//		}
-	//	}
-	//	
-	//}
-
-	//y = byfY;
-	//x = byfX;
-	//do{
-	//	byfY2 = y;
-	//	while ((gameField[y][x] == 0))
-	//	{
-	//		gameField[y][x] = -1;
-	//		y++;
-	//	}
-	//	y = byfY2 - 1;
-	//	while (gameField[y][x] == 0)
-	//	{
-	//		gameField[y][x] = -1;
-	//		y--;
-	//	}
-	//	y++;
-	//	while ((gameField[y][x] == -1) && (gameField[y][x + 1] != 0))
-	//	{
-	//		y++;
-	//	}
-	//	if (gameField[y][x + 1] == 0)
-	//	{
-	//		x++;
-	//	}
-	//	else
-	//	{
-	//		while (gameField[y][x] == 2)
-	//		{
-	//			x--;
-	//		}
-	//		while ((gameField[y][x] == -1) && (gameField[y][x + 1] != 0))
-	//		{
-	//			y++;
-	//		}
-	//		if (gameField[y][x + 1] == 0)
-	//		{
-	//			x++;
-	//		}
-	//	}
-
-	//} while ((gameField[y][x] == 0));
 
 }
 
@@ -433,10 +346,23 @@ void drop(int x, int y)
 
 void UpdateField()
 {
+	int ColEnemyCell= 0;
 	for (int i = 0; i < M; i++)
 		for (int j = 0; j < N; j++)
-			if (gameField[i][j] == -1) gameField[i][j] = 0;
+			if (gameField[i][j] == -1)
+			{
+				gameField[i][j] = 0;
+				ColEnemyCell++;
+			}
 			else gameField[i][j] = 1;
+
+	//проверка на победу игрока
+	float EnemyPercent = ((float)ColEnemyCell / (N * M))*100;
+	if (EnemyPercent < 100 - WIN_PERCENT)
+	{
+		GameEnd = true;
+		PlayerWin = true;
+	}
 }
 
 void MoveEnemy(GameObject* objects)
@@ -444,7 +370,8 @@ void MoveEnemy(GameObject* objects)
 	for (int i = 0; i < CountEnemy; i++)
 	{
 		objects[i].x += objects[i].delta_x;
-		if (gameField[objects[i].y / CELL_SIZE][objects[i].x / CELL_SIZE] == 1)
+		if ((gameField[objects[i].y / CELL_SIZE][objects[i].x / CELL_SIZE] == 1)
+			|| (gameField[objects[i].y / CELL_SIZE][objects[i].x / CELL_SIZE+1] == 1))
 		{
 			objects[i].delta_x = -objects[i].delta_x;
 
@@ -454,12 +381,13 @@ void MoveEnemy(GameObject* objects)
 			else
 			{
 
-				objects[i].x -= (objects[i].x % CELL_SIZE) * 2; //отскок влево
+				objects[i].x += (objects[i].x % CELL_SIZE) * -2; //отскок влево
 			}
 		}
 
 		objects[i].y += objects[i].delta_y;
-		if (gameField[objects[i].y / CELL_SIZE][objects[i].x / CELL_SIZE] == 1)
+		if ((gameField[objects[i].y / CELL_SIZE][objects[i].x / CELL_SIZE] == 1)
+			|| (gameField[objects[i].y / CELL_SIZE + 1][objects[i].x / CELL_SIZE ] == 1))
 		{
 			objects[i].delta_y = -objects[i].delta_y;
 			objects[i].y += objects[i].delta_y;
@@ -485,21 +413,10 @@ void MoveEnemy(GameObject* objects)
 
 void DrawGameField(GameObject* object, GameObject* enemy, HDC hdc,  HDC hdcMemSurface)
 {
-	//SelectObject(hdcMemSurface, object->image.hBitmap);
-	//TransparentBlt(
-	//	hdc,//ƒескриптор целевого контекста устройства.
-	//	object->x,// оордината x в логических единицах верхнего левого угла пр€моугольника назначени€.
-	//	object->y,// оордината y в логических единицах верхнего левого угла пр€моугольника назначени€.
-	//	object->width,//Ўирина в логических единицах целевого пр€моугольника.
-	//	object->height,//¬ысота в логических единицах целевого пр€моугольника.
-	//	hdcMemSurface,//ƒескриптор исходного контекста устройства.
-	//	0,// оордината x в логических единицах исходного пр€моугольника.
-	//	0,//Y-координата в логических единицах исходного пр€моугольника.
-	//	object->image.width,//Ўирина в логических единицах исходного пр€моугольника.
-	//	object->image.height,//¬ысота в логических единицах исходного пр€моугольника
-	//	RGB(255, 255, 255)//÷вет RGB в исходном растровом изображении считаетс€ прозрачным.
-	//);
 
+	HDC BuffHdc = CreateCompatibleDC(hdc);
+	HBITMAP BuffHbm = CreateCompatibleBitmap(hdc, 1 + (N + 1) * CELL_SIZE, 24 + (M + 1) * CELL_SIZE);
+	HANDLE BuffHan = SelectObject(BuffHdc, BuffHbm);
 
 	//перерисовка пол€
 	for (int i = 0; i < M; i++)
@@ -507,26 +424,35 @@ void DrawGameField(GameObject* object, GameObject* enemy, HDC hdc,  HDC hdcMemSu
 		for (int j = 0; j < N; j++) {
 			if (gameField[i][j] == 1)
 			{
-				Rectangle(hdc, j * CELL_SIZE, i * CELL_SIZE, j * CELL_SIZE + CELL_SIZE, i * CELL_SIZE + CELL_SIZE);
+				Rectangle(BuffHdc, j * CELL_SIZE, i * CELL_SIZE, j * CELL_SIZE + CELL_SIZE, i * CELL_SIZE + CELL_SIZE);
+
 			}
 			if (gameField[i][j] == 2)
 			{
-				Rectangle(hdc, j * CELL_SIZE, i * CELL_SIZE, j * CELL_SIZE + CELL_SIZE, i * CELL_SIZE + CELL_SIZE);
-				Rectangle(hdc, j * CELL_SIZE + 1, i * CELL_SIZE + 1, j * CELL_SIZE + CELL_SIZE - 1, i * CELL_SIZE + CELL_SIZE - 1);
+				Rectangle(BuffHdc, j * CELL_SIZE, i * CELL_SIZE, j * CELL_SIZE + CELL_SIZE, i * CELL_SIZE + CELL_SIZE);
+				Rectangle(BuffHdc, j * CELL_SIZE + 1, i * CELL_SIZE + 1, j * CELL_SIZE + CELL_SIZE - 1, i * CELL_SIZE + CELL_SIZE - 1);
 			}
 		}
 	}
 
 	//Draw Player
-	Rectangle(hdc, object->x * CELL_SIZE, object->y * CELL_SIZE, object->x * CELL_SIZE + CELL_SIZE, object->y * CELL_SIZE + CELL_SIZE);
-	Rectangle(hdc, object->x * CELL_SIZE+5, object->y * CELL_SIZE + 5, object->x * CELL_SIZE + CELL_SIZE - 5, object->y * CELL_SIZE + CELL_SIZE - 5);
+	Rectangle(BuffHdc, object->x * CELL_SIZE, object->y * CELL_SIZE, object->x * CELL_SIZE + CELL_SIZE, object->y * CELL_SIZE + CELL_SIZE);
+	Rectangle(BuffHdc, object->x * CELL_SIZE+5, object->y * CELL_SIZE + 5, object->x * CELL_SIZE + CELL_SIZE - 5, object->y * CELL_SIZE + CELL_SIZE - 5);
 
 	//ѕерерисовка врагов
 	for (int i = 0; i < CountEnemy; i++)
 	{
-		Ellipse(hdc, enemy[i].x , enemy[i].y , enemy[i].x  + CELL_SIZE, enemy[i].y  + CELL_SIZE);
-		Rectangle(hdc, enemy[i].x + 5, enemy[i].y  + 5, enemy[i].x + CELL_SIZE - 5, enemy[i].y + CELL_SIZE - 5);
+		Ellipse(BuffHdc, enemy[i].x , enemy[i].y , enemy[i].x  + CELL_SIZE, enemy[i].y  + CELL_SIZE);
+		Rectangle(BuffHdc, enemy[i].x + 5, enemy[i].y  + 5, enemy[i].x + CELL_SIZE - 5, enemy[i].y + CELL_SIZE - 5);
 
 	}
+
+	BitBlt(hdc, 0, 0, 1 + (N + 1) * CELL_SIZE, 24 + (M + 1) * CELL_SIZE, BuffHdc, 0, 0, SRCCOPY);
+
+	//освобождаем пам€ть
+	SelectObject(BuffHdc, BuffHan);
+	DeleteObject(BuffHbm);
+	DeleteObject(BuffHdc);
+
 }
 

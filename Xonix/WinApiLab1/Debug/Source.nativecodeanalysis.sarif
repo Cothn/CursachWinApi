@@ -7,18 +7,18 @@
         {
           "ruleId": "28251",
           "message": {
-            "text": "Inconsistent annotation for 'WinMain': this instance has no annotations. See d:\\windows kits\\10\\include\\10.0.18362.0\\um\\winbase.h(933). "
+            "text": "Inconsistent annotation for 'WinMain': this instance has no annotations. See c:\\program files (x86)\\windows kits\\10\\include\\10.0.18362.0\\um\\winbase.h(933). "
           },
           "locations": [
             {
               "physicalLocation": {
                 "fileLocation": {
-                  "uri": "file:///D:/Study/Univesity/5 term/OSaSP/WinApiLab1/WinApiLab1/Source.cpp"
+                  "uri": "file:///d:/reposithub/cursachwinapi/xonix/winapilab1/source.cpp"
                 },
                 "region": {
-                  "startLine": 10,
+                  "startLine": 40,
                   "startColumn": 14,
-                  "endLine": 10,
+                  "endLine": 40,
                   "endColumn": 14
                 }
               },
@@ -30,16 +30,16 @@
       "tool": {
         "name": "PREfast",
         "fullName": "PREfast Code Analysis",
-        "version": "14.23.28019.1",
-        "fileVersion": "14.00.28019.01"
+        "version": "14.20.27508.1",
+        "fileVersion": "14.00.27508.01"
       },
       "invocations": [
         {
-          "commandLine": "\"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Preview\\VC\\Tools\\MSVC\\14.23.28019\\bin\\HostX86\\x86\\c1xx.dll\" -ACf{1F7B090C-16DB-4822-966A-A93D26ED4681} -ACpmspft140.dll -Alint -D_PREFAST_ -D_AST_FE_ -Analyze -zm0x00CC3180 -il C:\\Users\\Lenovo\\AppData\\Local\\Temp\\_CL_4c2a42b9ast -typedil -f Source.cpp -Ze -D_MSC_EXTENSIONS -Zp8 -ZB64 -D_INTEGRAL_MAX_BITS=64 -Gs -pc \\:/ -D_MSC_VER=1923 -D_MSC_FULL_VER=192328019 -D_MSC_BUILD=1 -D_WIN32 -D_M_IX86=600 -D_M_IX86_FP=2 -GR -D_CPPRTTI -nologo -W 3 -diagnostics:column -D_GUARDOVERFLOW_CRT_ALLOCATORS=1 -Ot -DCODE_ANALYSIS -D_MBCS -D_CRT_SECURE_NO_WARNINGS -EHs -D_CPPUNWIND -EHc -D__MSVC_RUNTIME_CHECKS -RTCs -RTCu -D_DEBUG -D_MT -D_DLL -GS -D_M_FP_PRECISE -permissive- -Zc:wchar_t -Zc:forScope -FoDebug\\Source.obj -FdDebug\\vc142.pdb -Gz -analyze:quiet -analyze:plugin C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Preview\\VC\\Tools\\MSVC\\14.23.28019\\bin\\HostX86\\x86\\EspXEngine.dll -FC -errorreport:prompt -analyze:ruleset C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Preview\\Team Tools\\Static Analysis Tools\\Rule Sets\\NativeRecommendedRules.ruleset -analyze:projectdirectory D:\\Study\\Univesity\\5 term\\OSaSP\\WinApiLab1\\WinApiLab1 -analyze:rulesetdirectory ;C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Preview\\Team Tools\\Static Analysis Tools\\\\Rule Sets -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Preview\\VC\\Tools\\MSVC\\14.23.28019\\include -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Preview\\VC\\Tools\\MSVC\\14.23.28019\\atlmfc\\include -I C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Preview\\VC\\Auxiliary\\VS\\include -I D:\\Windows Kits\\10\\Include\\10.0.18362.0\\ucrt -I D:\\Windows Kits\\10\\Include\\10.0.18362.0\\um -I D:\\Windows Kits\\10\\Include\\10.0.18362.0\\shared -I D:\\Windows Kits\\10\\Include\\10.0.18362.0\\winrt -I D:\\Windows Kits\\10\\Include\\10.0.18362.0\\cppwinrt -I C:\\Program Files (x86)\\Windows Kits\\NETFXSDK\\4.7.2\\Include\\um"
+          "commandLine": "E:\\Seva\\PRoffesional2019\\VC\\Tools\\MSVC\\14.20.27508\\bin\\HostX86\\x86\\c1xx.dll -ACf{1F7B090C-16DB-4822-966A-A93D26ED4681} -ACpmspft140.dll -Alint -D_PREFAST_ -D_AST_FE_ -Analyze -zm0x00182090 -il C:\\Users\\Ami\\AppData\\Local\\Temp\\_CL_fb97cadbast -typedil -f Source.cpp -Ze -D_MSC_EXTENSIONS -Zp8 -ZB64 -D_INTEGRAL_MAX_BITS=64 -Gs -pc \\:/ -D_MSC_VER=1920 -D_MSC_FULL_VER=192027508 -D_MSC_BUILD=1 -D_WIN32 -D_M_IX86=600 -D_M_IX86_FP=2 -GR -D_CPPRTTI -nologo -W 3 -diagnostics:column- -diagnostics:caret- -D_GUARDOVERFLOW_CRT_ALLOCATORS=1 -Ot -DCODE_ANALYSIS -D_MBCS -D_CRT_SECURE_NO_WARNINGS -EHs -D_CPPUNWIND -EHc -D__MSVC_RUNTIME_CHECKS -RTCs -RTCu -D_DEBUG -D_MT -D_DLL -GS -D_M_FP_PRECISE -permissive- -Zc:wchar_t -Zc:forScope -FoDebug\\Source.obj -FdDebug\\vc142.pdb -Gz -analyze:quiet -analyze:plugin E:\\Seva\\PRoffesional2019\\VC\\Tools\\MSVC\\14.20.27508\\bin\\HostX86\\x86\\EspXEngine.dll -FC -errorreport:prompt -analyze:ruleset E:\\Seva\\PRoffesional2019\\Team Tools\\Static Analysis Tools\\Rule Sets\\NativeRecommendedRules.ruleset -analyze:projectdirectory D:\\RepositHub\\CursachWinApi\\Xonix\\WinApiLab1 -analyze:rulesetdirectory ;E:\\Seva\\PRoffesional2019\\Team Tools\\Static Analysis Tools\\\\Rule Sets -I E:\\Seva\\PRoffesional2019\\VC\\Tools\\MSVC\\14.20.27508\\include -I E:\\Seva\\PRoffesional2019\\VC\\Tools\\MSVC\\14.20.27508\\atlmfc\\include -I E:\\Seva\\PRoffesional2019\\VC\\Auxiliary\\VS\\include -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\ucrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\um -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\shared -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\winrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\cppwinrt -I C:\\Program Files (x86)\\Windows Kits\\NETFXSDK\\4.7.2\\Include\\um"
         }
       ],
       "files": {
-        "file:///d:/study/univesity/5 term/osasp/winapilab1/winapilab1/source.cpp": {
+        "file:///d:/reposithub/cursachwinapi/xonix/winapilab1/source.cpp": {
           "roles": [
             "analysisTarget",
             "resultFile"
@@ -117,6 +117,50 @@
           },
           "6029": {
             "id": "6029",
+            "name": "",
+            "shortDescription": "",
+            "fullDescription": "",
+            "configuration": {
+              "enabled": true,
+              "defaultLevel": "warning"
+            },
+            "helpUri": ""
+          },
+          "6288": {
+            "id": "6288",
+            "name": "",
+            "shortDescription": "",
+            "fullDescription": "",
+            "configuration": {
+              "enabled": true,
+              "defaultLevel": "warning"
+            },
+            "helpUri": ""
+          },
+          "28262": {
+            "id": "28262",
+            "name": "",
+            "shortDescription": "",
+            "fullDescription": "",
+            "configuration": {
+              "enabled": true,
+              "defaultLevel": "warning"
+            },
+            "helpUri": ""
+          },
+          "6705": {
+            "id": "6705",
+            "name": "",
+            "shortDescription": "",
+            "fullDescription": "",
+            "configuration": {
+              "enabled": true,
+              "defaultLevel": "warning"
+            },
+            "helpUri": ""
+          },
+          "6064": {
+            "id": "6064",
             "name": "",
             "shortDescription": "",
             "fullDescription": "",
@@ -247,8 +291,8 @@
             },
             "helpUri": ""
           },
-          "6288": {
-            "id": "6288",
+          "6066": {
+            "id": "6066",
             "name": "",
             "shortDescription": "",
             "fullDescription": "",
@@ -258,30 +302,8 @@
             },
             "helpUri": ""
           },
-          "28262": {
-            "id": "28262",
-            "name": "",
-            "shortDescription": "",
-            "fullDescription": "",
-            "configuration": {
-              "enabled": true,
-              "defaultLevel": "warning"
-            },
-            "helpUri": ""
-          },
-          "6705": {
-            "id": "6705",
-            "name": "",
-            "shortDescription": "",
-            "fullDescription": "",
-            "configuration": {
-              "enabled": true,
-              "defaultLevel": "warning"
-            },
-            "helpUri": ""
-          },
-          "6064": {
-            "id": "6064",
+          "6303": {
+            "id": "6303",
             "name": "",
             "shortDescription": "",
             "fullDescription": "",
@@ -304,28 +326,6 @@
           },
           "6220": {
             "id": "6220",
-            "name": "",
-            "shortDescription": "",
-            "fullDescription": "",
-            "configuration": {
-              "enabled": true,
-              "defaultLevel": "warning"
-            },
-            "helpUri": ""
-          },
-          "6303": {
-            "id": "6303",
-            "name": "",
-            "shortDescription": "",
-            "fullDescription": "",
-            "configuration": {
-              "enabled": true,
-              "defaultLevel": "warning"
-            },
-            "helpUri": ""
-          },
-          "6066": {
-            "id": "6066",
             "name": "",
             "shortDescription": "",
             "fullDescription": "",
@@ -1171,17 +1171,6 @@
             },
             "helpUri": ""
           },
-          "26812": {
-            "id": "26812",
-            "name": "",
-            "shortDescription": "",
-            "fullDescription": "",
-            "configuration": {
-              "enabled": true,
-              "defaultLevel": "warning"
-            },
-            "helpUri": ""
-          },
           "6328": {
             "id": "6328",
             "name": "",
@@ -1833,17 +1822,6 @@
           },
           "26454": {
             "id": "26454",
-            "name": "",
-            "shortDescription": "",
-            "fullDescription": "",
-            "configuration": {
-              "enabled": true,
-              "defaultLevel": "warning"
-            },
-            "helpUri": ""
-          },
-          "26478": {
-            "id": "26478",
             "name": "",
             "shortDescription": "",
             "fullDescription": "",

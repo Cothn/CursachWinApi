@@ -1,0 +1,4 @@
+﻿  Source.cpp
+D:\RepositHub\CursachWinApi\Xonix\WinApiLab1\Source.cpp(106): error C2065: 'GWL_HINSTANCE': undeclared identifier
+D:\RepositHub\CursachWinApi\Xonix\WinApiLab1\Source.cpp(106): error C2789: 'hInstance': an object of const-qualified type must be initialized
+  D:\RepositHub\CursachWinApi\Xonix\WinApiLab1\Source.cpp(106): note: see declaration of 'hInstance'

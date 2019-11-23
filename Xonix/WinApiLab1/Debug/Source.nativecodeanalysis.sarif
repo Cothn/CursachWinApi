@@ -16,10 +16,10 @@
                   "uri": "file:///d:/reposithub/cursachwinapi/xonix/winapilab1/source.cpp"
                 },
                 "region": {
-                  "startLine": 57,
-                  "startColumn": 3,
-                  "endLine": 57,
-                  "endColumn": 3
+                  "startLine": 58,
+                  "startColumn": 2,
+                  "endLine": 58,
+                  "endColumn": 2
                 }
               },
               "fullyQualifiedLogicalName": "public: __thiscall stack::stack(void)"
@@ -38,9 +38,9 @@
                   "uri": "file:///d:/reposithub/cursachwinapi/xonix/winapilab1/source.cpp"
                 },
                 "region": {
-                  "startLine": 74,
+                  "startLine": 78,
                   "startColumn": 14,
-                  "endLine": 74,
+                  "endLine": 78,
                   "endColumn": 14
                 }
               },
@@ -57,7 +57,7 @@
       },
       "invocations": [
         {
-          "commandLine": "E:\\Seva\\PRoffesional2019\\VC\\Tools\\MSVC\\14.20.27508\\bin\\HostX86\\x86\\c1xx.dll -ACf{1F7B090C-16DB-4822-966A-A93D26ED4681} -ACpmspft140.dll -Alint -D_PREFAST_ -D_AST_FE_ -Analyze -zm0x01082090 -il C:\\Users\\Ami\\AppData\\Local\\Temp\\_CL_8050a7daast -typedil -f Source.cpp -Ze -D_MSC_EXTENSIONS -Zp8 -ZB64 -D_INTEGRAL_MAX_BITS=64 -Gs -pc \\:/ -D_MSC_VER=1920 -D_MSC_FULL_VER=192027508 -D_MSC_BUILD=1 -D_WIN32 -D_M_IX86=600 -D_M_IX86_FP=2 -GR -D_CPPRTTI -nologo -W 3 -diagnostics:column- -diagnostics:caret- -D_GUARDOVERFLOW_CRT_ALLOCATORS=1 -Ot -DCODE_ANALYSIS -D_MBCS -D_CRT_SECURE_NO_WARNINGS -EHs -D_CPPUNWIND -EHc -D__MSVC_RUNTIME_CHECKS -RTCs -RTCu -D_DEBUG -D_MT -D_DLL -GS -D_M_FP_PRECISE -permissive- -Zc:wchar_t -Zc:forScope -FoDebug\\Source.obj -FdDebug\\vc142.pdb -Gz -analyze:quiet -analyze:plugin E:\\Seva\\PRoffesional2019\\VC\\Tools\\MSVC\\14.20.27508\\bin\\HostX86\\x86\\EspXEngine.dll -FC -errorreport:prompt -analyze:ruleset E:\\Seva\\PRoffesional2019\\Team Tools\\Static Analysis Tools\\Rule Sets\\NativeRecommendedRules.ruleset -analyze:projectdirectory D:\\RepositHub\\CursachWinApi\\Xonix\\WinApiLab1 -analyze:rulesetdirectory ;E:\\Seva\\PRoffesional2019\\Team Tools\\Static Analysis Tools\\\\Rule Sets -I E:\\Seva\\PRoffesional2019\\VC\\Tools\\MSVC\\14.20.27508\\include -I E:\\Seva\\PRoffesional2019\\VC\\Tools\\MSVC\\14.20.27508\\atlmfc\\include -I E:\\Seva\\PRoffesional2019\\VC\\Auxiliary\\VS\\include -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\ucrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\um -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\shared -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\winrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\cppwinrt -I C:\\Program Files (x86)\\Windows Kits\\NETFXSDK\\4.7.2\\Include\\um"
+          "commandLine": "E:\\Seva\\PRoffesional2019\\VC\\Tools\\MSVC\\14.20.27508\\bin\\HostX86\\x86\\c1xx.dll -ACf{1F7B090C-16DB-4822-966A-A93D26ED4681} -ACpmspft140.dll -Alint -D_PREFAST_ -D_AST_FE_ -Analyze -zm0x01082090 -il C:\\Users\\Ami\\AppData\\Local\\Temp\\_CL_13e15b64ast -typedil -f Source.cpp -Ze -D_MSC_EXTENSIONS -Zp8 -ZB64 -D_INTEGRAL_MAX_BITS=64 -Gs -pc \\:/ -D_MSC_VER=1920 -D_MSC_FULL_VER=192027508 -D_MSC_BUILD=1 -D_WIN32 -D_M_IX86=600 -D_M_IX86_FP=2 -GR -D_CPPRTTI -nologo -W 3 -diagnostics:column- -diagnostics:caret- -D_GUARDOVERFLOW_CRT_ALLOCATORS=1 -Ot -DCODE_ANALYSIS -D_MBCS -D_CRT_SECURE_NO_WARNINGS -EHs -D_CPPUNWIND -EHc -D__MSVC_RUNTIME_CHECKS -RTCs -RTCu -D_DEBUG -D_MT -D_DLL -GS -D_M_FP_PRECISE -permissive- -Zc:wchar_t -Zc:forScope -FoDebug\\Source.obj -FdDebug\\vc142.pdb -Gz -analyze:quiet -analyze:plugin E:\\Seva\\PRoffesional2019\\VC\\Tools\\MSVC\\14.20.27508\\bin\\HostX86\\x86\\EspXEngine.dll -FC -errorreport:prompt -analyze:ruleset E:\\Seva\\PRoffesional2019\\Team Tools\\Static Analysis Tools\\Rule Sets\\NativeRecommendedRules.ruleset -analyze:projectdirectory D:\\RepositHub\\CursachWinApi\\Xonix\\WinApiLab1 -analyze:rulesetdirectory ;E:\\Seva\\PRoffesional2019\\Team Tools\\Static Analysis Tools\\\\Rule Sets -I E:\\Seva\\PRoffesional2019\\VC\\Tools\\MSVC\\14.20.27508\\include -I E:\\Seva\\PRoffesional2019\\VC\\Tools\\MSVC\\14.20.27508\\atlmfc\\include -I E:\\Seva\\PRoffesional2019\\VC\\Auxiliary\\VS\\include -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\ucrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\um -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\shared -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\winrt -I C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.18362.0\\cppwinrt -I C:\\Program Files (x86)\\Windows Kits\\NETFXSDK\\4.7.2\\Include\\um"
         }
       ],
       "files": {

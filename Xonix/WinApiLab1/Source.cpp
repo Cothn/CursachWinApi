@@ -11,26 +11,6 @@ typedef struct GameObject
 
 } GameObject;
 
-class stack
-{
-	int obj[Width * Height * 2 + 1];
-public:
-	int top;
-	stack()
-	{
-		top = 0;
-	}
-	void push(int i)
-	{
-		obj[top] = i;
-		top++;
-	}
-	int pop()
-	{
-		return(obj[--top]);
-	}
-};
-
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 void MyRedrawWindow(HWND hWnd);
@@ -51,6 +31,7 @@ const int Height = 35;
 const int Width = 40;
 const int WIN_PERCENT = 70;
 const int MaxCountEnemy = Width / 2;
+const int MaxStackSize = Width * Height * 2 + 1;
 
 //флаги
 bool GameEnd = false;
@@ -66,7 +47,28 @@ const int pixelHeight = 24 + (Height + 1) * CELL_SIZE;
 
 //Глобальные переменные
 int gameField[Height][Width];
+GameObject* Enemys = new GameObject[MaxCountEnemy];
+GameObject player;
 
+class stack
+{
+	int obj[MaxStackSize];
+public:
+	int top;
+	stack()
+	{
+		top = 0;
+	}
+	void push(int i)
+	{
+		obj[top] = i;
+		top++;
+	}
+	int pop()
+	{
+		return(obj[--top]);
+	}
+};
 
 
 static HDC hdcMemSurface;
@@ -110,8 +112,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdL
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message,
 	WPARAM wParam, LPARAM lParam)
 {
-	GameObject* Enemys;
-	GameObject player;
 
 	HDC hmdc;
 	HBRUSH hBrush; //создаём объект-кисть
@@ -126,7 +126,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message,
 		case WM_CREATE:
 		{
 			// инициализация игры
-			Enemys = new GameObject[MaxCountEnemy];
 			InitializeGame(&player, Enemys, 0, 0, 1);
 
 			const HINSTANCE hInstance = (HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE);

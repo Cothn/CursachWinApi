@@ -4,28 +4,28 @@
     <SFA>
       <FILEPATH>d:\reposithub\cursachwinapi\xonix\winapilab1</FILEPATH>
       <FILENAME>source.cpp</FILENAME>
-      <LINE>47</LINE>
+      <LINE>57</LINE>
       <COLUMN>2</COLUMN>
     </SFA>
     <DEFECTCODE>26495</DEFECTCODE>
-    <DESCRIPTION>Variable 'stack::a' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <DESCRIPTION>Variable 'stack::obj' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
     <FUNCTION>stack::{ctor}</FUNCTION>
     <DECORATED>??0stack@@QAE@XZ</DECORATED>
-    <FUNCLINE>47</FUNCLINE>
+    <FUNCLINE>57</FUNCLINE>
     <PATH></PATH>
   </DEFECT>
   <DEFECT>
     <SFA>
       <FILEPATH>d:\reposithub\cursachwinapi\xonix\winapilab1</FILEPATH>
       <FILENAME>source.cpp</FILENAME>
-      <LINE>71</LINE>
+      <LINE>74</LINE>
       <COLUMN>13</COLUMN>
     </SFA>
     <DEFECTCODE>28251</DEFECTCODE>
     <DESCRIPTION>Inconsistent annotation for 'WinMain': this instance has no annotations. See c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\winbase.h(933). </DESCRIPTION>
     <FUNCTION>WinMain</FUNCTION>
     <DECORATED>WinMain@16</DECORATED>
-    <FUNCLINE>71</FUNCLINE>
+    <FUNCLINE>74</FUNCLINE>
     <PATH></PATH>
   </DEFECT>
 </DEFECTS>

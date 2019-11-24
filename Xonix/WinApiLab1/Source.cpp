@@ -14,24 +14,32 @@ typedef struct GameObject
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 void MyRedrawWindow(HWND hWnd);
-void InitializeGame(GameObject* player, GameObject* enemy, int x, int y, int edge);
+void InitializeGame(GameObject* player, GameObject* enemy, int start_x, int start_y, int edge);
 void InitializeEnemy(GameObject* objects, int edge);
-void MovePlayer(GameObject* object, GameObject* enemy, int width, int height);
+float MovePlayer(GameObject* object, GameObject* enemy, float enemyPercent);
 void MoveEnemy(GameObject* objects);
-void DrawGameField(GameObject* object, GameObject* enemy, HDC hdc);
-void UpdateField();
+void DrawGameField(GameObject* object, GameObject* enemy, float enemyPercent, int enemyMaxSpeed, HDC hdc);
+float UpdateField();
 void CheckCell(int y, int x);
 
 
 //константы приложени€
-static const LPSTR OverMessage = (LPSTR)"Game Over!";
-static const LPSTR WinMessage = (LPSTR)"Player Win!";
-static const int CELL_SIZE = 15;
-const int Height = 35;
-const int Width = 40;
-const int WIN_PERCENT = 70;
+#define PercentMessage "Percent: "
+#define SpeedMessage "Speed: "
+#define OverMessage "Game Over!"
+#define WinMessage "Player Win!"
+#define CELL_SIZE 15
+#define Height  35
+#define Width 45
+#define WIN_PERCENT 70
+#define STATISTIC_PIXEL 20
 const int MaxCountEnemy = Width / 2;
 const int MaxStackSize = Width * Height * 2 + 1;
+const int Edge = 1;
+
+//размеры окна в пиксел€х
+const int pixelWidth = 16 + (Width) * CELL_SIZE;
+const int pixelHeight = 16 +(Height) * CELL_SIZE + STATISTIC_PIXEL*2;
 
 //флаги
 bool GameEnd = false;
@@ -40,15 +48,6 @@ bool PlayerWin = false;
 //измен€емые параметры
 int CountEnemy =5;
 int EnemyMaxSpeed = (12 % (CELL_SIZE));
-
-//размеры окна в пиксел€х
-const int pixelWidth = 1 + (Width + 1) * CELL_SIZE;
-const int pixelHeight = 24 + (Height + 1) * CELL_SIZE;
-
-//√лобальные переменные
-int gameField[Height][Width];
-GameObject* Enemys = new GameObject[MaxCountEnemy];
-GameObject player;
 
 class stack
 {
@@ -70,6 +69,13 @@ public:
 	}
 };
 
+//√лобальные переменные
+float EnemyPercent = 100;
+int gameField[Height][Width];
+GameObject* Enemys = new GameObject[MaxCountEnemy];
+GameObject Player;
+
+
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
 {
 	WNDCLASSEX wcex; HWND hWnd; MSG msg;
@@ -89,7 +95,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdL
 	RegisterClassEx(&wcex);
 
 	hWnd = CreateWindow("XonixClass", "Hello, Xonix!",
-		WS_OVERLAPPED | WS_SYSMENU, CW_USEDEFAULT, CW_USEDEFAULT,
+		WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
 		pixelWidth, pixelHeight, NULL, NULL, hInstance, NULL);
 
 	if (!hWnd)
@@ -122,7 +128,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message,
 		case WM_CREATE:
 		{
 			// инициализаци€ игры
-			InitializeGame(&player, Enemys, 0, 0, 1);
+			InitializeGame(&Player, Enemys, 0, 0, Edge);
 			SetTimer(hWnd, 1, 1000/15, NULL);
 			return 0;
 		}
@@ -130,20 +136,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message,
 		case WM_TIMER:
 		{
 			if (!GameEnd) {
-				MovePlayer(&player, Enemys, Width, Height);
+				EnemyPercent = MovePlayer(&Player, Enemys, EnemyPercent);
+				MoveEnemy(Enemys);
 			}
 			else
 			{
 				GameEnd = false;
-
 				if (PlayerWin)
 				{
 					PlayerWin = false;
 					MessageBox(hWnd, WinMessage, WinMessage, MB_OK | MB_APPLMODAL);
-					InitializeGame(&player, Enemys, 0, 0, 1);
+					EnemyPercent = 100;
+					InitializeGame(&Player, Enemys, 0, 0, Edge);
 				}
 				else {
-					InitializeGame(&player, Enemys, 0, 0, 1);
+					EnemyPercent = 100;
+					InitializeGame(&Player, Enemys, 0, 0, Edge);
 					MessageBox(hWnd, OverMessage, OverMessage, MB_OK | MB_APPLMODAL);
 				}
 
@@ -157,20 +165,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message,
 			switch (wParam)
 			{
 			case VK_LEFT:
-				player.delta_x = -1;
-				player.delta_y = 0;
+				Player.delta_x = -1;
+				Player.delta_y = 0;
 				break;
 			case VK_UP:
-				player.delta_x = 0;
-				player.delta_y = -1;
+				Player.delta_x = 0;
+				Player.delta_y = -1;
 				break;
 			case VK_RIGHT:
-				player.delta_x = 1;
-				player.delta_y = 0;
+				Player.delta_x = 1;
+				Player.delta_y = 0;
 				break;
 			case VK_DOWN:
-				player.delta_x = 0;
-				player.delta_y = 1;
+				Player.delta_x = 0;
+				Player.delta_y = 1;
 				break;
 			default:
 				break;
@@ -189,14 +197,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message,
 				if (CountEnemy < MaxCountEnemy)
 				{
 					CountEnemy++;
-					InitializeGame(&player, Enemys, 0, 0, 1);
+					InitializeGame(&Player, Enemys, 0, 0, 1);
 				}
 				break;
 			case VK_SUBTRACT:
 				if (CountEnemy > 0)
 				{
 					CountEnemy--;
-					InitializeGame(&player, Enemys, 0, 0, 1);
+					InitializeGame(&Player, Enemys, 0, 0, 1);
 				}
 				break;
 			case VK_MULTIPLY:
@@ -212,7 +220,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message,
 				}
 				break;
 			case VK_END:
-				InitializeGame(&player, Enemys, 0, 0, 1);
+				InitializeGame(&Player, Enemys, 0, 0, 1);
 				break;
 
 			default:
@@ -227,7 +235,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message,
 		{
 			hdc = BeginPaint(hWnd, &ps);
 			ps.fErase = false;
-			DrawGameField(&player, Enemys, hdc);
+			DrawGameField(&Player, Enemys, EnemyPercent, EnemyMaxSpeed, hdc);
 			EndPaint(hWnd, &ps);
 			break;
 		}
@@ -248,7 +256,7 @@ void MyRedrawWindow(HWND hWnd)
 	UpdateWindow(hWnd);
 }
 
-void InitializeGame(GameObject* player, GameObject* enemy, int x, int y, int edge)
+void InitializeGame(GameObject* player, GameObject* enemy, int start_x, int start_y, int edge)
 {
 	//инициализаци€ кра€
 	for (int i = 0; i < Height; i++)
@@ -258,8 +266,8 @@ void InitializeGame(GameObject* player, GameObject* enemy, int x, int y, int edg
 			
 
 	//»нициализаци€ игрока
-	player->x = x;
-	player->y = y;
+	player->x = start_x;
+	player->y = start_y;
 	player->delta_x = 0;
 	player->delta_y = 0;
 
@@ -278,7 +286,7 @@ void InitializeEnemy(GameObject* objects, int edge)
 	}
 }
 
-void MovePlayer(GameObject* object, GameObject* enemy, int width, int height)
+float MovePlayer(GameObject* object, GameObject* enemy, float enemyPercent)
 {
 	if ((object->delta_x != 0) || (object->delta_y != 0)) {
 
@@ -288,9 +296,9 @@ void MovePlayer(GameObject* object, GameObject* enemy, int width, int height)
 		{
 			object->x = 0;
 		}
-		else if ((object->x) >= width)
+		else if ((object->x) >= Width)
 		{
-			object->x = width - 1;
+			object->x = Width - 1;
 		}
 
 		object->y += object->delta_y;
@@ -298,9 +306,9 @@ void MovePlayer(GameObject* object, GameObject* enemy, int width, int height)
 		{
 			object->y = 0;
 		}
-		else if ((object->y) >= height)
+		else if ((object->y) >= Height)
 		{
-			object->y = height - 1;
+			object->y = Height - 1;
 		}
 
 		//проверка конечной точки
@@ -322,7 +330,16 @@ void MovePlayer(GameObject* object, GameObject* enemy, int width, int height)
 					for (int i = 0; i < CountEnemy; i++)
 						CheckCell(enemy[i].x / CELL_SIZE, enemy[i].y / CELL_SIZE);
 
-					UpdateField();
+					enemyPercent = UpdateField();
+
+					//проверка на победу игрока
+					if (enemyPercent < 100 - WIN_PERCENT)
+					{
+						GameEnd = true;
+						PlayerWin = true;
+					}
+
+
 				}
 				break;
 
@@ -335,7 +352,7 @@ void MovePlayer(GameObject* object, GameObject* enemy, int width, int height)
 		}
 
 	}
-	MoveEnemy(enemy);
+	return enemyPercent;
 }
 
 void CheckCell(int x, int y)
@@ -379,7 +396,7 @@ void CheckCell(int x, int y)
 
 }
 
-void UpdateField()
+float UpdateField()
 {
 	int ColEnemyCell= 0;
 	for (int i = 0; i < Height; i++)
@@ -391,13 +408,9 @@ void UpdateField()
 			}
 			else gameField[i][j] = 1;
 
-	//проверка на победу игрока
-	float EnemyPercent = ((float)ColEnemyCell / (Width * Height))*100;
-	if (EnemyPercent < 100 - WIN_PERCENT)
-	{
-		GameEnd = true;
-		PlayerWin = true;
-	}
+
+	//процент вражеских територии
+	return ((float)ColEnemyCell / ((Width-1) * (Height-1)))*100; 
 }
 
 void MoveEnemy(GameObject* objects)
@@ -429,7 +442,7 @@ void MoveEnemy(GameObject* objects)
 
 }
 
-void DrawGameField(GameObject* object, GameObject* enemy, HDC hdc)
+void DrawGameField(GameObject* object, GameObject* enemy, float enemyPercent, int enemyMaxSpeed, HDC hdc)
 {
 	//буферизаци€
 	HDC BuffHdc = CreateCompatibleDC(hdc);
@@ -463,6 +476,18 @@ void DrawGameField(GameObject* object, GameObject* enemy, HDC hdc)
 		Rectangle(BuffHdc, enemy[i].x + CELL_SIZE / 3, enemy[i].y  + CELL_SIZE / 3, enemy[i].x + CELL_SIZE - CELL_SIZE / 3, enemy[i].y + CELL_SIZE - CELL_SIZE / 3);
 
 	}
+
+	
+	//¬ывод статистики
+	char* stat = new char(3);
+	char message [100] = PercentMessage;
+	_itoa(100 - enemyPercent, stat, 10);
+	strcat(message, stat);
+	strcat(message, " ");
+	strcat(message, SpeedMessage);
+	_itoa(enemyMaxSpeed, stat, 10);
+	strcat(message, stat);
+	TextOut(BuffHdc, 0, (Height)* CELL_SIZE +2 , message, strlen(message));
 
 	BitBlt(hdc, 0, 0, pixelWidth, pixelHeight, BuffHdc, 0, 0, SRCCOPY);
 

@@ -1,4 +1,5 @@
 ﻿  Source.cpp
+D:\RepositHub\CursachWinApi\Xonix\WinApiLab1\Source.cpp(484): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   WinApiLab1.vcxproj -> D:\RepositHub\CursachWinApi\Xonix\Debug\WinApiLab1.exe
-d:\reposithub\cursachwinapi\xonix\winapilab1\source.cpp(58): warning C26495: Variable 'stack::obj' is uninitialized. Always initialize a member variable (type.6).
-d:\reposithub\cursachwinapi\xonix\winapilab1\source.cpp(73): warning C28251: Inconsistent annotation for 'WinMain': this instance has no annotations. See c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\winbase.h(933). 
+d:\reposithub\cursachwinapi\xonix\winapilab1\source.cpp(57): warning C26495: Variable 'stack::obj' is uninitialized. Always initialize a member variable (type.6).
+d:\reposithub\cursachwinapi\xonix\winapilab1\source.cpp(79): warning C28251: Inconsistent annotation for 'WinMain': this instance has no annotations. See c:\program files (x86)\windows kits\10\include\10.0.18362.0\um\winbase.h(933). 

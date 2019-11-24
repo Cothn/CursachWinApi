@@ -95,7 +95,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdL
 	RegisterClassEx(&wcex);
 
 	hWnd = CreateWindow("XonixClass", "Hello, Xonix!",
-		WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
+		WS_OVERLAPPED | WS_SYSMENU, CW_USEDEFAULT, CW_USEDEFAULT,
 		pixelWidth, pixelHeight, NULL, NULL, hInstance, NULL);
 
 	if (!hWnd)

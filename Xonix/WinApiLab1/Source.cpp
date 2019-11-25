@@ -286,6 +286,7 @@ void InitializeEnemy(GameObject* objects, int edge)
 	}
 }
 
+//1(A1)
 float MovePlayer(GameObject* object, GameObject* enemy, float enemyPercent)
 {
 	if ((object->delta_x != 0) || (object->delta_y != 0)) {
@@ -355,6 +356,7 @@ float MovePlayer(GameObject* object, GameObject* enemy, float enemyPercent)
 	return enemyPercent;
 }
 
+//2
 void CheckCell(int x, int y)
 {
 	stack CordinateStack;
@@ -396,6 +398,7 @@ void CheckCell(int x, int y)
 
 }
 
+//3
 float UpdateField()
 {
 	int ColEnemyCell= 0;
@@ -413,6 +416,7 @@ float UpdateField()
 	return ((float)ColEnemyCell / ((Width-1) * (Height-1)))*100; 
 }
 
+//4
 void MoveEnemy(GameObject* objects)
 {
 	for (int i = 0; i < CountEnemy; i++)
@@ -442,6 +446,7 @@ void MoveEnemy(GameObject* objects)
 
 }
 
+//5
 void DrawGameField(GameObject* object, GameObject* enemy, float enemyPercent, int enemyMaxSpeed, HDC hdc)
 {
 	//буферизация

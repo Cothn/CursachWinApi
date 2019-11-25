@@ -411,9 +411,9 @@ float UpdateField()
 			}
 			else gameField[i][j] = 1;
 
-
+	float enemyPercent = ((float)ColEnemyCell / ((Width - 1) * (Height - 1))) * 100;
 	//процент вражеских територии
-	return ((float)ColEnemyCell / ((Width-1) * (Height-1)))*100; 
+	return enemyPercent;
 }
 
 //4
